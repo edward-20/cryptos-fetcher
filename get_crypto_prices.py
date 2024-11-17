@@ -1,16 +1,16 @@
 '''
 main, quick script
 '''
+import os
 import requests
 from dotenv import load_dotenv
-import os
 
 def main():
     '''
     main
     '''
     load_dotenv()
-    API_KEY = os.getenv("API_KEY")
+    api_key = os.getenv("API_KEY")
     cryptonames_to_id = {
         'Polygon': 'matic-network',
         'Wrapped ETC': 'wrapped-ether',
@@ -42,7 +42,7 @@ def main():
         response = requests.get(api_url, params={
             'ids': v,
             'vs_currencies': 'usd,aud',
-            'x_cg_demo_api_key': API_KEY
+            'x_cg_demo_api_key': api_key
         },timeout=10)
 
         if response.status_code == 200:
