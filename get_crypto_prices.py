@@ -1,20 +1,16 @@
 '''
 main, quick script
 '''
-from collections import defaultdict
-import csv
-import json
 import requests
-import sys
-
-COLUMN_NAME = "cryptoname"
-CSV_FILE = "cryptos.csv"
-COIN_IDS_FILE = "coin-ids.json"
+from dotenv import load_dotenv
+import os
 
 def main():
     '''
     main
     '''
+    load_dotenv()
+    API_KEY = os.getenv("API_KEY")
     cryptonames_to_id = {
         'Polygon': 'matic-network',
         'Wrapped ETC': 'wrapped-ether',
@@ -46,22 +42,13 @@ def main():
         response = requests.get(api_url, params={
             'ids': v,
             'vs_currencies': 'usd,aud',
-            'x_cg_demo_api_key': 'CG-k4oruRoXPPc6QrdifkDF8Hkq'
+            'x_cg_demo_api_key': API_KEY
         },timeout=10)
 
         if response.status_code == 200:
             coin_data = response.json()[cryptonames_to_id[k]]
             print(f"{k},{coin_data['usd']},{coin_data['aud']}")
-            # print(f"usd: :{coin_data[k]['usd']}", end=", ")
-            # print(f"aud: :{coin_data[k]['aud']}")
 
-
-# curl -G \
-#      --url "https://api.coingecko.com/api/v3/simple/price" \
-#      --data-urlencode "ids=matic-network" \
-#      --data-urlencode "vs_currencies=usd,aud" \
-#      --data-urlencode "x_cg_demo_api_key=CG-k4oruRoXPPc6QrdifkDF8Hkq" \
-#      --header 'accept: application/json'
 
 
 if __name__ == "__main__":
